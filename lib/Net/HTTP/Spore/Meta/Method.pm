@@ -178,6 +178,7 @@ sub wrap {
             'spore.errors'         => *STDERR,
             'spore.url_scheme'     => $base_url->scheme,
             'spore.formats'         => $formats,
+            'spore.method'          => $method->name,
         };
 
         my $response = $self->http_request($env);
