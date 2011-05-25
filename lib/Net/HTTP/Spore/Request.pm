@@ -150,7 +150,7 @@ sub uri {
 
     my $base = $self->_uri_base;
 
-    my $path_escape_class = '^A-Za-z0-9\-\._~/';
+    my $path_escape_class = '^A-Za-z0-9\-\._~/@\:';
 
     my $path = URI::Escape::uri_escape($path_info || '', $path_escape_class);
 
@@ -260,7 +260,7 @@ sub finalize {
         my $v = $params->[++$i];
         my $modified = 0;
 
-        if ($path_info && $path_info =~ s/\:$k/$v/) {
+        if ($path_info && $path_info =~ s/\:$k/=$k/) {
             $modified++;
         }
 
@@ -291,6 +291,14 @@ sub finalize {
 
     # clean remaining :name in url
     $path_info =~ s/:\w+//g if $path_info;
+   
+	for ( my $i = 0 ; $i < scalar @$params ; $i++ ) {
+        my $k = $params->[$i];
+        my $v = $params->[++$i];
+        my $modified = 0;
+
+        $path_info =~ s/=$k/$v/;
+	}
 
     my $query_string;
     if (scalar @$query) {
