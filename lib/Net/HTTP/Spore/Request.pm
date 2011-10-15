@@ -300,6 +300,8 @@ sub finalize {
         $path_info =~ s/=$k/$v/;
 	}
 
+	$path_info =~ s|//+|/|g;
+
     my $query_string;
     if (scalar @$query) {
         $query_string = join('&', @$query);
